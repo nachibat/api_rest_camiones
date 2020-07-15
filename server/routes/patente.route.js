@@ -3,7 +3,7 @@ const Patente = require('../models/patente.model');
 
 const app = express();
 
-app.get('/patente', (req, res) => {
+app.get('/patentes', (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -35,7 +35,7 @@ app.get('/patente', (req, res) => {
 
 });
 
-app.post('/patente', (req, res) => {
+app.post('/patentes', (req, res) => {
 
     const body = req.body
 

@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(require('./routes/routes'));
 
 // Coneccion a base de datos
-mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true },
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
     (err, res) => {
 
         if (err) throw err;

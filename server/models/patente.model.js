@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
@@ -13,6 +14,7 @@ const patenteSchema = new Schema({
     },
     patente: {
         type: String,
+        unique: true,
         required: [true, 'La patente es obligatoria']
     },
     telefono: {
@@ -24,5 +26,7 @@ const patenteSchema = new Schema({
         default: true
     }
 });
+
+patenteSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' });
 
 module.exports = mongoose.model('Patente', patenteSchema);
