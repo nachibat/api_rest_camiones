@@ -41,5 +41,5 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology:
 
 // Inicio y escucha del servidor
 app.listen(process.env.PORT, () => {
-    console.log('Escuchando puesto: ' + process.env.PORT);
+    console.log('Escuchando puerto: ' + process.env.PORT);
 });
