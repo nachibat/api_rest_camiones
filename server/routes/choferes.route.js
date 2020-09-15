@@ -4,10 +4,10 @@ const Patente = require('../models/patente.model');
 const app = express();
 
 // ==========================
-// Listado de patentes
+// Listado de choferes
 // ==========================
 
-app.get('/patentes', (req, res) => {
+app.get('/choferes', (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -44,7 +44,7 @@ app.get('/patentes', (req, res) => {
 // Busqueda de patente
 // ==========================
 
-app.get('/patentes/buscar/apellido/:termino', (req, res) => {
+app.get('/choferes/buscar/apellido/:termino', (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -78,7 +78,7 @@ app.get('/patentes/buscar/apellido/:termino', (req, res) => {
 
 });
 
-app.get('/patentes/buscar/nombre/:termino', (req, res) => {
+app.get('/choferes/buscar/nombre/:termino', (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -112,7 +112,7 @@ app.get('/patentes/buscar/nombre/:termino', (req, res) => {
 
 });
 
-app.get('/patentes/buscar/patente/:termino', (req, res) => {
+app.get('/choferes/buscar/dni/:termino', (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -148,10 +148,10 @@ app.get('/patentes/buscar/patente/:termino', (req, res) => {
 
 
 // ==========================
-// Alta de patente
+// Alta de chofer
 // ==========================
 
-app.post('/patentes', (req, res) => {
+app.post('/choferes', (req, res) => {
 
     const body = req.body
 

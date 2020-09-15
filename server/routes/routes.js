@@ -2,6 +2,6 @@ const express = require('express');
 
 const app = express();
 
-app.use(require('./patente.route'));
+app.use(require('./choferes.route'));
 
 module.exports = app;
