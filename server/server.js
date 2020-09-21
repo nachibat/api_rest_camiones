@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors({ origin: true, credentials: true }));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, X-Auth-Token, Accept");
     next();
 });
@@ -30,7 +30,7 @@ app.use(require('./routes/routes'));
 
 
 // Coneccion a base de datos
-mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },
     (err, res) => {
 
         if (err) throw err;

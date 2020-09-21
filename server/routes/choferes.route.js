@@ -1,5 +1,6 @@
 const express = require('express');
 const Patente = require('../models/patente.model');
+const { verificaToken } = require('../middlewares/autenticacion');
 
 const app = express();
 
@@ -7,7 +8,7 @@ const app = express();
 // Listado de choferes
 // ==========================
 
-app.get('/choferes', (req, res) => {
+app.get('/choferes', verificaToken, (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -44,7 +45,7 @@ app.get('/choferes', (req, res) => {
 // Busqueda de patente
 // ==========================
 
-app.get('/choferes/buscar/apellido/:termino', (req, res) => {
+app.get('/choferes/buscar/apellido/:termino', verificaToken, (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -78,7 +79,7 @@ app.get('/choferes/buscar/apellido/:termino', (req, res) => {
 
 });
 
-app.get('/choferes/buscar/nombre/:termino', (req, res) => {
+app.get('/choferes/buscar/nombre/:termino', verificaToken, (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -112,7 +113,7 @@ app.get('/choferes/buscar/nombre/:termino', (req, res) => {
 
 });
 
-app.get('/choferes/buscar/dni/:termino', (req, res) => {
+app.get('/choferes/buscar/dni/:termino', verificaToken, (req, res) => {
 
     const desde = Number(req.query.desde) || 0;
     const limite = Number(req.query.limite) || 5;
@@ -151,7 +152,7 @@ app.get('/choferes/buscar/dni/:termino', (req, res) => {
 // Alta de chofer
 // ==========================
 
-app.post('/choferes', (req, res) => {
+app.post('/choferes', verificaToken, (req, res) => {
 
     const body = req.body
 
