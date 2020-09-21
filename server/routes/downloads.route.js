@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/download', (req, res) => {
 
-    res.download(path.join(__dirname, '../downloads/agenda.v1.0.0.apk'), 'agenda.v1.0.0.apk');
+    res.download(path.join(__dirname, '../downloads/agenda.v1.0.1.apk'), 'agenda.v1.0.1.apk');
 
 });
 
