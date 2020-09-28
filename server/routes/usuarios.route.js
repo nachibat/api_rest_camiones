@@ -47,10 +47,10 @@ app.post('/usuario', [verificaToken, verificaAdminRole], function(req, res) {
 
 });
 
-app.put('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
+app.put('/usuario/:id', verificaToken, function(req, res) {
 
     let id = req.params.id;
-    let body = _.pick(req.body, ['nombre', 'email', 'img', 'role']);
+    let body = _.pick(req.body, ['username', 'nombre', 'email', 'img', 'role']);
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
 
@@ -97,6 +97,76 @@ app.delete('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res
 
     });
 
+});
+
+app.post('/usuario/cambiopassword', verificaToken, (req, res) => {
+
+    const id = req.usuario._id;
+    const user = req.usuario.username;
+    const oldPassword = req.body.oldpassword;
+    const newPassword = req.body.newpassword;
+
+    if (!oldPassword || !newPassword) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Se requieren contraseñas'
+        });
+    }
+
+    Usuario.findOne({ username: user }, (err, usuarioDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Problemas con token enviado. Vuelva a iniciar sesion'
+            });
+        }
+
+        if (!usuarioDB.estado) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Problemas con token enviado. Vuelva a iniciar sesion'
+            });
+        }
+
+        if (!bcrypt.compareSync(oldPassword, usuarioDB.password)) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Contraseña actual incorrecta'
+            });
+        }
+
+        Usuario.findByIdAndUpdate(id, { password: bcrypt.hashSync(newPassword, 10) }, { new: true }, (err, usuarioDB) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            if (!usuarioDB) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Usuario no encontrado'
+                });
+            }
+
+            return res.json({
+                ok: true,
+                usuarioDB
+            });
+
+        });
+
+    });
 });
 
 
