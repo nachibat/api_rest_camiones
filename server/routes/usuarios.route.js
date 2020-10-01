@@ -17,6 +17,50 @@ app.get('/usuario/', verificaToken, function(req, res) {
 
 });
 
+app.get('/usuario/consulta/:id', verificaToken, (req, res) => {
+
+    const id = req.params.id;
+
+    Usuario.findById(id, (err, usuarioDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                message: 'Usuario no encontrado',
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
+
+
+    });
+
+});
+
+app.get('/usuario/listado', verificaToken, (req, res) => {
+
+    Usuario.find({ estado: true }).exec((err, usuarios) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuarios
+        });
+
+    });
+
+});
+
 app.post('/usuario', [verificaToken, verificaAdminRole], function(req, res) {
 
     let body = req.body;
