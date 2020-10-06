@@ -1,6 +1,7 @@
 const express = require('express');
 const Patente = require('../models/patente.model');
-const { verificaToken } = require('../middlewares/autenticacion');
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion');
+const _ = require('underscore');
 
 const app = express();
 
@@ -42,8 +43,30 @@ app.get('/choferes', verificaToken, (req, res) => {
 });
 
 // ==========================
-// Busqueda de patente
+// Busqueda de choferes
 // ==========================
+
+app.get('/choferes/buscar/id/:id', verificaToken, (req, res) => {
+
+    const id = req.params.id;
+
+    Patente.findById(id, (err, choferDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        return res.json({
+            ok: true,
+            choferDB
+        });
+
+    });
+
+});
 
 app.get('/choferes/buscar/apellido/:termino', verificaToken, (req, res) => {
 
@@ -152,7 +175,7 @@ app.get('/choferes/buscar/dni/:termino', verificaToken, (req, res) => {
 // Alta de chofer
 // ==========================
 
-app.post('/choferes', verificaToken, (req, res) => {
+app.post('/choferes', [verificaToken, verificaAdminRole], (req, res) => {
 
     const body = req.body
 
@@ -175,6 +198,67 @@ app.post('/choferes', verificaToken, (req, res) => {
         res.json({
             ok: true,
             patente: patenteDB
+        });
+
+    });
+
+});
+
+// ======================
+// Modificacion de chofer
+// ======================
+
+app.put('/choferes/:id', [verificaToken, verificaAdminRole], (req, res) => {
+
+    const id = req.params.id;
+    const body = _.pick(req.body, ['nombre', 'apellido', 'patente', 'telefono']);
+
+    Patente.findByIdAndUpdate(id, body, { new: true }, (err, choferDB) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            chofer: choferDB
+        });
+
+    });
+
+
+});
+
+// =================
+// Baja de chofer
+// =================
+
+app.delete('/choferes/:id', [verificaToken, verificaAdminRole], (req, res) => {
+
+    const id = req.params.id;
+
+    Patente.findByIdAndUpdate(id, { activo: false }, { new: true }, (err, choferDB) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!choferDB) {
+            return res.status(400).json({
+                ok: false,
+                err: 'Usuario no encontrado'
+            });
+        }
+
+        res.json({
+            ok: true,
+            chofer: choferDB
         });
 
     });
